@@ -1,0 +1,43 @@
+server:
+  port: 8084  # Change back to standard port
+
+spring:
+  application:
+    name: user-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/userservice_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+app:
+  jwtSecret: bms-edge-user-service-secret-key-2024-super-long-secret
+  jwtExpirationMs: 3600000
+  jwtRefreshExpirationMs: 86400000
+
+# FULL DEBUG LOGGING
+logging:
+  level:
+    com.bmsedge.user: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.boot: DEBUG
+    org.hibernate: DEBUG
+    org.springframework.orm: DEBUG
+    org.springframework.transaction: DEBUG
+    root: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
