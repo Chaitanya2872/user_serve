@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/auth")  // Changed from "/api/users/auth" to "/api/auth"
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class AuthController {
 
@@ -26,7 +25,8 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
-    @PostMapping("/signup")
+    // Support both /api/auth/signup and /api/users/auth/signup
+    @PostMapping({"/api/auth/signup", "/api/users/auth/signup"})
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest, BindingResult result) {
         logger.info("Signup request received for email: {}", signUpRequest.getEmail());
 
@@ -54,7 +54,8 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/signin")
+    // Support both /api/auth/signin and /api/users/auth/signin
+    @PostMapping({"/api/auth/signin", "/api/users/auth/signin", "/api/auth/login", "/api/users/auth/login"})
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result) {
         logger.info("Login request received for email: {}", loginRequest.getEmail());
 
@@ -77,7 +78,8 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/refresh")
+    // Support both /api/auth/refresh and /api/users/auth/refresh
+    @PostMapping({"/api/auth/refresh", "/api/users/auth/refresh"})
     public ResponseEntity<?> refreshToken(@RequestParam String refreshToken) {
         logger.info("Refresh token request received");
 
@@ -93,8 +95,8 @@ public class AuthController {
         }
     }
 
-    // Health check endpoint
-    @GetMapping("/health")
+    // Health check endpoints
+    @GetMapping({"/api/auth/health", "/api/users/auth/health"})
     public ResponseEntity<Map<String, String>> health() {
         Map<String, String> status = new HashMap<>();
         status.put("status", "UP");

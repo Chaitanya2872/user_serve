@@ -87,10 +87,11 @@ public class AuthService {
 
             logger.info("Tokens generated successfully for user: {}", savedUser.getEmail());
 
+            // Use userId instead of id to match AuthResponse constructor
             return new AuthResponse(
                     accessToken,
                     refreshToken,
-                    savedUser.getId(),
+                    savedUser.getId(),  // This will be set as userId
                     savedUser.getFullName(),
                     savedUser.getEmail(),
                     savedUser.getRoles()
@@ -161,10 +162,11 @@ public class AuthService {
 
             logger.info("Authentication completed successfully for: {}", loginRequest.getEmail());
 
+            // Use userId instead of id to match AuthResponse constructor
             return new AuthResponse(
                     accessToken,
                     refreshToken,
-                    user.getId(),
+                    user.getId(),  // This will be set as userId
                     user.getFullName(),
                     user.getEmail(),
                     user.getRoles()
@@ -213,10 +215,11 @@ public class AuthService {
 
             logger.info("Tokens refreshed successfully for user: {}", email);
 
+            // Use userId instead of id to match AuthResponse constructor
             return new AuthResponse(
                     newAccessToken,
                     newRefreshToken,
-                    user.getId(),
+                    user.getId(),  // This will be set as userId
                     user.getFullName(),
                     user.getEmail(),
                     user.getRoles()

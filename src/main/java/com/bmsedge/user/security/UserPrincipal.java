@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class UserPrincipal implements UserDetails {
@@ -17,14 +16,17 @@ public class UserPrincipal implements UserDetails {
     private String fullName;
     private String email;
     private String password;
+    private boolean active;  // Added to track user active status
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserPrincipal(Long id, String fullName, String email, String password,
+                         boolean active,  // Added active parameter
                          Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
         this.password = password;
+        this.active = active;
         this.authorities = authorities;
     }
 
@@ -38,6 +40,7 @@ public class UserPrincipal implements UserDetails {
                 user.getFullName(),
                 user.getEmail(),
                 user.getPassword(),
+                user.isActive(),  // Pass the actual active status
                 authorities
         );
     }
@@ -76,7 +79,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return active;  // Use active status to determine if account is locked
     }
 
     @Override
@@ -86,7 +89,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true; // Always return true for now
+        return active;  // Use actual active status instead of always returning true
     }
 
     @Override
