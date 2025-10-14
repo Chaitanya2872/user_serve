@@ -5,9 +5,9 @@ spring:
   application:
     name: user-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/userservice_db
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://bunny:neHcejP8I7Yz5e13KiWZKysLrLpSY6zk@dpg-d3n6icur433s73avj1eg-a.singapore-postgres.render.com/users_anrk
+    username: bunny
+    password: neHcejP8I7Yz5e13KiWZKysLrLpSY6zk
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -21,7 +21,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://13.208.172.7:8761/eureka/
 
 app:
   jwtSecret: bms-edge-user-service-secret-key-2024-super-long-secret
