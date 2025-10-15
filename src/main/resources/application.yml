@@ -1,48 +1,77 @@
+
+
+
 server:
-  port: 8084  # Change back to standard port
+  port: ${PORT:8084}  # Render provides PORT env var; fallback to 8084
 
 spring:
   application:
     name: user-service
+
   datasource:
-    url: jdbc:postgresql://bunny:neHcejP8I7Yz5e13KiWZKysLrLpSY6zk@dpg-d3n6icur433s73avj1eg-a.singapore-postgres.render.com/users_anrk
+    # ✅ Correct PostgreSQL URL format
+    url: jdbc:postgresql://dpg-d3n6icur433s73avj1eg-a.singapore-postgres.render.com:5432/users_anrk
     username: bunny
     password: neHcejP8I7Yz5e13KiWZKysLrLpSY6zk
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 30000
+      connection-timeout: 20000
+      pool-name: UserServiceHikariPool
+
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: update   # ✅ Use 'none' in production if schema is fixed
     show-sql: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
+  jackson:
+    time-zone: Asia/Kolkata  # Fix timezone issues in Render/Heroku-like environments
+
+# ✅ Eureka Client Configuration
 eureka:
   client:
+    register-with-eureka: true
+    fetch-registry: true
     service-url:
       defaultZone: http://13.208.172.7:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 10
+    lease-expiration-duration-in-seconds: 30
 
+# ✅ JWT Configuration
 app:
   jwtSecret: bms-edge-user-service-secret-key-2024-super-long-secret
-  jwtExpirationMs: 3600000
-  jwtRefreshExpirationMs: 86400000
+  jwtExpirationMs: 3600000        # 1 hour
+  jwtRefreshExpirationMs: 86400000 # 24 hours
 
-# FULL DEBUG LOGGING
+# ✅ Logging
 logging:
   level:
-    com.bmsedge.user: DEBUG
-    org.springframework.security: DEBUG
+    root: INFO
     org.springframework.web: DEBUG
     org.springframework.boot: DEBUG
     org.hibernate: DEBUG
-    org.springframework.orm: DEBUG
-    org.springframework.transaction: DEBUG
-    root: INFO
+    com.bmsedge.user: DEBUG
+    org.springframework.security: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 
-
+# ✅ Actuator endpoints for health checks
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
 
 
 
