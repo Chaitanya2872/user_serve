@@ -4,11 +4,13 @@ server:
 spring:
   application:
     name: user-service
+
   datasource:
-    url: jdbc:postgresql://bunny:neHcejP8I7Yz5e13KiWZKysLrLpSY6zk@dpg-d3n6icur433s73avj1eg-a.singapore-postgres.render.com/users_anrk
+    url: jdbc:postgresql://dpg-d3n6icur433s73avj1eg-a.singapore-postgres.render.com:5432/users_anrk
     username: bunny
     password: neHcejP8I7Yz5e13KiWZKysLrLpSY6zk
     driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
